@@ -103,38 +103,27 @@ function bindShowMore() {
   const button = document.querySelector('button');
 
   button.addEventListener('click', (e) => {
-    for (let i = 3; i<6;i++) {
-      fetch(recipes[i])
-      .then(response => response.json())
-      .then(data => {
-        recipeData[recipes[i]] = data;
-        //console.log(recipeData[`recipe${i}`]);
-        // if (i == 2 && Object.keys(recipeData).length == recipes.length)  {
-        //   resolve(true);
-        // } 
-      })
-      // .catch((error) => {
-      //   console.error('Error fetching recipes:', error);
-      //   reject(false);
-      // });
-      setTimeout(() => { },300);
-      console.log("h");
-
+    //console.log(recipes[3]);
+    //console.log(recipeData);
+    if (button.innerText == "Show more"){
+      button.innerText = "Show less";
+      for (let i = 3; i<6; i++) {
+        // console.log(recipeData);
+        const txt = recipes[i];
+        //console.log(recipeData[txt]);
+        let x = document.createElement('recipe-card');
+        let mn = document.querySelector('main');
+        x.data = recipeData[recipes[i]];
+        console.log(recipeData[recipes[i]]);
+        mn.appendChild(x);
+         
+        //console.log("h");
+      }
+    } else {
+      button.innerText = "Show more";
     }
-    console.log(recipes[3]);
-    console.log(recipeData);
 
-    for (let i = 3; i<6; i++) {
-      //console.log(recipeData);
-      const txt = recipes[i];
-      //console.log(recipeData[txt]);
-      let x = document.createElement('recipe-card');
-      let mn = document.querySelector('main');
-      x.data = recipeData[recipes[i]];
-      mn.appendChild(x);
-       
-      //console.log("h");
-    }
+    
 
   });
 }
