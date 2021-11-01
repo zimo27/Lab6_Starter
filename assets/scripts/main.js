@@ -5,7 +5,10 @@
 const recipes = [
   'https://introweb.tech/assets/json/ghostCookies.json',
   'https://introweb.tech/assets/json/birthdayCake.json',
-  'https://introweb.tech/assets/json/chocolateChip.json'
+  'https://introweb.tech/assets/json/chocolateChip.json',
+  "assets/recipes/ch1.json",
+  "assets/recipes/ch2.json",
+  "assets/recipes/ch3.json"
 ];
 
 // Once all of the recipes that were specified above have been fetched, their
@@ -25,6 +28,7 @@ async function init() {
     return;
   };
   // Add the first three recipe cards to the page
+  //console.log(recipeData);
   createRecipeCards();
   // Make the "Show more" button functional
   bindShowMore();
@@ -43,6 +47,25 @@ async function fetchRecipes() {
     // in the recipes folder and fetch them from there. You'll need to add their paths to the recipes array.
 
     // Part 1 Expose - TODO
+
+    for (let i = 0; i<6;i++) {
+      fetch(recipes[i])
+      .then(response => response.json())
+      .then(data => {
+        recipeData[recipes[i]] = data;
+        //console.log(recipeData[`recipe${i}`]);
+        // if (i == 2 && Object.keys(recipeData).length == recipes.length)  {
+        //   resolve(true);
+        // } 
+      })
+      .catch((error) => {
+        console.error('Error fetching recipes:', error);
+        reject(false);
+      });
+      setTimeout(() => { resolve(true)},300);
+
+    }
+    
   });
 }
 
@@ -54,6 +77,18 @@ function createRecipeCards() {
   // show any others you've added when the user clicks on the "Show more" button.
 
   // Part 1 Expose - TODO
+  // console.log(recipeData[])
+  for (let i = 0; i<6; i++) {
+    //console.log(recipeData);
+    const txt = recipes[i];
+    //console.log(recipeData[txt]);
+    let x = document.createElement('recipe-card');
+    let mn = document.querySelector('main');
+    x.data = recipeData[recipes[i]];
+    mn.appendChild(x);
+     
+    // console.log("h");
+  }
 }
 
 function bindShowMore() {
@@ -65,4 +100,41 @@ function bindShowMore() {
   // in the recipeData object where you stored them/
 
   // Part 2 Explore - TODO
+  const button = document.querySelector('button');
+
+  button.addEventListener('click', (e) => {
+    for (let i = 3; i<6;i++) {
+      fetch(recipes[i])
+      .then(response => response.json())
+      .then(data => {
+        recipeData[recipes[i]] = data;
+        //console.log(recipeData[`recipe${i}`]);
+        // if (i == 2 && Object.keys(recipeData).length == recipes.length)  {
+        //   resolve(true);
+        // } 
+      })
+      // .catch((error) => {
+      //   console.error('Error fetching recipes:', error);
+      //   reject(false);
+      // });
+      setTimeout(() => { },300);
+      console.log("h");
+
+    }
+    console.log(recipes[3]);
+    console.log(recipeData);
+
+    for (let i = 3; i<6; i++) {
+      //console.log(recipeData);
+      const txt = recipes[i];
+      //console.log(recipeData[txt]);
+      let x = document.createElement('recipe-card');
+      let mn = document.querySelector('main');
+      x.data = recipeData[recipes[i]];
+      mn.appendChild(x);
+       
+      //console.log("h");
+    }
+
+  });
 }

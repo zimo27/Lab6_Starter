@@ -3,6 +3,8 @@ class RecipeCard extends HTMLElement {
     // Part 1 Expose - TODO
 
     // You'll want to attach the shadow DOM here
+    super();
+    this.shadow = this.attachShadow({mode: 'open'});
   }
 
   set data(data) {
@@ -98,8 +100,78 @@ class RecipeCard extends HTMLElement {
 
     // Make sure to attach your root element and styles to the shadow DOM you
     // created in the constructor()
+     // const 
+    //console.log(data);
+    let img = document.createElement('img');
+    img.setAttribute('src',searchForKey(data, 'thumbnailUrl'));
+    //console.log(searchForKey(data, 'thumbnailUrl'));
+    img.setAttribute('alt', "Recipe Title" ); 
+    card.appendChild(img);     
 
-    // Part 1 Expose - TODO
+    let title = document.createElement('p');
+    title.classList.add('title');
+    card.appendChild(title);
+
+    let link = document.createElement('a');
+    let lurl = getUrl(data);
+    if(lurl == null){
+      lurl = searchForKey(data, 'url');
+    }
+    link.setAttribute('href', lurl);
+    link.innerHTML = searchForKey(data, 'headline');
+    title.appendChild(link);
+
+
+    //recipeIngredient
+    // console.log(getUrl(data));
+    // console.log(getOrganization(data));
+    // console.log(searchForKey(data, "thumbnail"));
+    //console.log("recipeIngredient" in data);
+    let org = document.createElement ('p');
+    org.classList.add('organization');
+    let orgName = getOrganization(data);
+    org.innerHTML = orgName;
+    card.appendChild(org);
+
+    let rating = document.createElement('div');
+    rating.classList.add('rating');
+    card.appendChild(rating);
+
+    let span1 = document.createElement('span');
+    if (searchForKey(data, "aggregateRating") != undefined) {
+      span1.innerHTML = Math.round(searchForKey(data, 'aggregateRating')["ratingValue"]);
+      rating.appendChild(span1);
+
+      //console.log(searchForKey(data, "aggregateRating")["ratingValue"]);
+      //rating.setAttribute('src', )
+      let img1 = document.createElement('img');
+      
+      img1.setAttribute('src',`assets/images/icons/${span1.innerHTML}-star.svg`);
+      img1.setAttribute('alt', "Recipe Title" ); 
+      rating.appendChild(img1)
+  
+      let span2 = document.createElement('span');
+      span2.innerHTML = "(" + (searchForKey(data, 'aggregateRating')["ratingCount"]) + ")";
+      rating.appendChild(span2);
+    } else {
+      span1.innerHTML = "No Reviews";
+      rating.appendChild(span1);
+    }
+    
+
+    let time = document.createElement('time');
+    if (searchForKey(data, 'totalTime')!= undefined){
+      time.innerHTML = convertTime(searchForKey(data, 'totalTime'));
+    }
+    
+    card.appendChild(time);
+
+    let ingr = document.createElement('p');
+    ingr.classList.add('ingredients');
+    ingr.innerHTML = createIngredientList(searchForKey(data, 'recipeIngredient'));
+    card.appendChild(ingr);
+    
+    this.shadow.append(styleElem, card);
   }
 }
 
